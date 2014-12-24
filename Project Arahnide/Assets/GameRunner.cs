@@ -23,25 +23,31 @@ public class GameRunner : MonoBehaviour {
 		delta = timeout;
 		spiders = new ArrayList ();
 
-		StartCoroutine ("SpawnSpider", spiderBrown.transform);
-		//StartCoroutine ("HauntHuman", spiderBlack.transform);
+		//;
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetKey(KeyCode.Alpha1))
+		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			panicLevel = 1;
+			StopCoroutine ("SpawnSpider");
+			StartCoroutine ("SpawnSpider", spiderBrown.transform);
 		}
-		else if (Input.GetKey(KeyCode.Alpha2))
+		else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
 			panicLevel = 2;
+			StopCoroutine("HauntHuman");
+			StartCoroutine ("HauntHuman", spiderBlack.transform);
 		}
-		else if (Input.GetKey(KeyCode.Alpha3))
+		else if (Input.GetKeyDown(KeyCode.Alpha3))
 		{
 			panicLevel = 3; 
 		}
+
+		//panicLevel = 2;
 
 		switch (panicLevel) {
 				
@@ -75,6 +81,9 @@ public class GameRunner : MonoBehaviour {
 	IEnumerator SpawnSpider(Transform t)
 	{
 		// INITIALIZATION
+		GameObject lightObject = (GameObject)GameObject.Find ("Point light");
+		lightObject.GetComponent<Light> ().light.range = 20;	// brighten light
+
 		GameObject newSpider;
 		newSpider = (GameObject)Instantiate(spiderBrown);
 		spawnLocations = (GameObject[])GameObject.FindGameObjectsWithTag ("Level1SpawnLocation");
@@ -118,9 +127,9 @@ public class GameRunner : MonoBehaviour {
 
 		//INITIALIZATION
 		GameObject lightObject = (GameObject)GameObject.Find ("Point light");
-		lightObject.GetComponent<Light> ().light.range = 5;
+		lightObject.GetComponent<Light> ().light.range = 10;	// dim light
 		GameObject newSpider = (GameObject)Instantiate (spiderBlack);
-		newSpider.transform.localScale = new Vector3 (2f, 2f, 2f);
+		newSpider.transform.localScale = new Vector3 (1f, 1f, 1f);
 		newSpider.AddComponent ("SpiderHaunt");
 
 		// EXECUTION
@@ -129,6 +138,9 @@ public class GameRunner : MonoBehaviour {
 			yield return null;
 
 		}
+
+		// CLEANUP
+		GameObject.Destroy (newSpider);
 
 		yield return null;
 	}

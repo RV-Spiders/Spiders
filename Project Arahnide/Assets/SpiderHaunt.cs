@@ -6,6 +6,7 @@ public class SpiderHaunt : MonoBehaviour {
 	// Use this for initialization
 
 	GameObject human;
+	NavMeshAgent navMeshAgent;
 
 	float timeout = 5f;
 	float delta = 0f;
@@ -15,6 +16,9 @@ public class SpiderHaunt : MonoBehaviour {
 		human = GameObject.Find ("First Person Controller");
 
 		gameObject.transform.localPosition = human.transform.localPosition - new Vector3(7, 0, 7);
+
+		gameObject.AddComponent<NavMeshAgent>();
+		navMeshAgent = (NavMeshAgent)gameObject.GetComponent<NavMeshAgent> ();
 
 	}
 	
@@ -29,20 +33,31 @@ public class SpiderHaunt : MonoBehaviour {
 
 			if (Random.Range(0, 10) <= 3)
 			{
-
+				gameObject.transform.localScale = new Vector3(0, 0, gameObject.transform.localScale.z);
 			}
 			else
 			{
-				//gameObject.animation.Play("taunt");
+				gameObject.transform.localScale = new Vector3(2f, 2f, 2f);
 			}
 		} 
 		else 
 		{
 			delta -= Time.deltaTime;
+
+			if (Vector3.Distance(human.transform.localPosition, gameObject.transform.localPosition) > 5f)
+			{
+				gameObject.animation.Play("run");
+				if (!navMeshAgent.pathPending)
+					navMeshAgent.SetDestination (new Vector3(human.transform.localPosition.x, /*gameObject.transform.localPosition.y*/ 1, human.transform.localPosition.z));
+			}
+			else
+			{
+				navMeshAgent.Stop();
+				gameObject.animation.Play("taunt");
+			}
 		}
-		gameObject.animation.Play ("run");
-		///gameObject.rigidbody.velocity = new Vector3 (3, 0, 0);
-		gameObject.transform.LookAt (new Vector3(human.transform.localPosition.x, 2, human.transform.localPosition.z));
-		gameObject.transform.localPosition += gameObject.transform.forward * 0.05f;  // Vector3.Slerp (gameObject.transform.localPosition, new Vector3(human.transform.localPosition.x, gameObject.transform.localPosition.y, human.transform.localPosition.z), Time.deltaTime);
+
+
+		gameObject.transform.LookAt (new Vector3 (human.transform.localPosition.x, 1, human.transform.localPosition.z));
 	}
 }
