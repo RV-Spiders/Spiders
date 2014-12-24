@@ -6,29 +6,25 @@ public class GameRunner : MonoBehaviour {
 	private float timeout = 3f;
 	private float delta = 0f;
 
-	private int state;
+	private int panicLevel;
 
-	public GameObject spider;
+	public GameObject human;
+	public GameObject spiderBrown;
+	public GameObject spiderBlack;
 	public ArrayList spiders;
-	private GameObject newSpider;
-	// Use this for initialization
 
+	private GameObject[] spawnLocations;
 	Transform spiderLookAtPoint;
 
-	public AudioSource audio1;
-	public AudioSource audio2;
-
+	// Use this for initialization
 	void Start () {
 
-		state = 1;
+		panicLevel = 1;
 		delta = timeout;
 		spiders = new ArrayList ();
-		newSpider = (GameObject)Instantiate(spider);
-		newSpider.AddComponent("SpiderStalk");
 
-		StartCoroutine ("SpawnSpider", newSpider.transform);
-
-		spiderLookAtPoint = GameObject.Find("SpiderLookAt").transform;
+		StartCoroutine ("SpawnSpider", spiderBrown.transform);
+		//StartCoroutine ("HauntHuman", spiderBlack.transform);
 	}
 	
 	// Update is called once per frame
@@ -36,58 +32,31 @@ public class GameRunner : MonoBehaviour {
 
 		if (Input.GetKey(KeyCode.Alpha1))
 		{
-			state = 1;
+			panicLevel = 1;
 		}
 		else if (Input.GetKey(KeyCode.Alpha2))
 		{
-			state = 2;
+			panicLevel = 2;
 		}
 		else if (Input.GetKey(KeyCode.Alpha3))
 		{
-			state = 3; 
+			panicLevel = 3; 
 		}
 
-		switch (state) {
+		switch (panicLevel) {
 				
 		case 1:
 
-			spiderLookAtPoint = GameObject.Find("SpiderLookAt").transform;
-
-			//newSpider.transform.LookAt(spiderLookAtPoint);
-
-			// code for level 1
-			/*
-			if (delta <= 0.0f)
-			{
-				if (spiders.Count < 3) 
-				{
-					GameObject newSpider = (GameObject)Instantiate(spider, new Vector3(-3, 1, 5), Quaternion.identity);
-					//MonoBehaviour script = (MonoBehaviour)GameObject.Find("SpiderErraticMovement.cs");
-					newSpider.AddComponent("SpiderErraticMovement");
-					spiders.Add(newSpider);
-				}
-				delta = timeout;
-			}
-			else 
-			{
-				delta -= Time.deltaTime;
-			}*/
-
-			// LEVEL 1, make spider follow person
-
-			//newSpider.transform.LookAt(person.transform);
-			//newSpider.transform.localPosition.Set(person.transform.localPosition.x, person.transform.localPosition.y, person.transform.localPosition.z);
-
-
-			// LEVEL 1, spawn spider in random places, make a taunt, remove spider
-
-
+			// spawn one spider in different locations, not too close to human
+			// when human gets too close, spider disappears
 
 			break;
 
 		case 2:
 
-			// code for level 2
+			// two spiders
+			// one randomly crawling on ceiling, walls etc.
+			// one randomly appearing behind human and hissing
 
 			break;
 
@@ -98,40 +67,70 @@ public class GameRunner : MonoBehaviour {
 			break;
 
 		default:
-			//throw new Exception();
 			break;
 		}
 	}
 
+	// PANIC LEVEL 1
 	IEnumerator SpawnSpider(Transform t)
 	{
-		while (true) {
+		// INITIALIZATION
+		GameObject newSpider;
+		newSpider = (GameObject)Instantiate(spiderBrown);
+		spawnLocations = (GameObject[])GameObject.FindGameObjectsWithTag ("Level1SpawnLocation");
+		newSpider.AddComponent ("SpiderDisappearWhenHumanClose");
+		spiderLookAtPoint = GameObject.Find("SpiderLookAt").transform;
+
+		// EXECUTION
+		while (panicLevel == 1) {
 						
-			GameObject[] spawnLocations = (GameObject[])GameObject.FindGameObjectsWithTag ("Level1SpawnLocation");
 			if (spawnLocations.Length > 0)
 			{
 				GameObject location;
-				do
+				float dist;
+
+				do 
 				{
-				  	location = spawnLocations [Random.Range (0, spawnLocations.Length)];
-				}
-				while (location.transform.localPosition == newSpider.transform.localPosition);
+					location = spawnLocations [Random.Range (0, spawnLocations.Length)];
+					dist = Mathf.Abs(Vector3.Distance(human.transform.localPosition, location.transform.localPosition));
+				} while (dist <= 8f);
+
 				newSpider.transform.localPosition = location.transform.localPosition;
 				newSpider.transform.LookAt(spiderLookAtPoint);
 				newSpider.animation.Play ("taunt");
+				newSpider.audio.Stop ();
 				newSpider.audio.Play();
-				/*if (Random.Range(0, 2) == 0)
-				{
-					audio1.Play();
-				}
-				else
-				{
-					audio2.Play();
-				}*/
+				newSpider.SetActive(true);
 			}
-			yield return (new WaitForSeconds(4f));
+
+			yield return (new WaitForSeconds(6f));
 		}
 
+		// CLEANUP
+		GameObject.Destroy (newSpider);
 
+		yield return null;
 	}
+
+	IEnumerator HauntHuman(Transform t)
+	{
+		// LEVEL 2
+
+		//INITIALIZATION
+		GameObject lightObject = (GameObject)GameObject.Find ("Point light");
+		lightObject.GetComponent<Light> ().light.range = 5;
+		GameObject newSpider = (GameObject)Instantiate (spiderBlack);
+		newSpider.transform.localScale = new Vector3 (2f, 2f, 2f);
+		newSpider.AddComponent ("SpiderHaunt");
+
+		// EXECUTION
+		while (panicLevel == 2) {
+				
+			yield return null;
+
+		}
+
+		yield return null;
+	}
+
 }

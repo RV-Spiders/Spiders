@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\GameRunner.cs" />
+     <Compile Include="Assets\SpiderDisappearWhenHumanClose.cs" />
      <Compile Include="Assets\SpiderErraticMovement.cs" />
+     <Compile Include="Assets\SpiderHaunt.cs" />
      <Compile Include="Assets\SpiderStalk.cs" />
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>D:/Projects/Virtual Reality/Lab3/Spiders/Project Arahnide/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
