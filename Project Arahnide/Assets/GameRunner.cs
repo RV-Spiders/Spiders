@@ -11,6 +11,7 @@ public class GameRunner : MonoBehaviour {
 	public GameObject human;
 	public GameObject spiderBrown;
 	public GameObject spiderBlack;
+	public GameObject darkOne;
 	public ArrayList spiders;
 
 	private GameObject[] spawnLocations;
@@ -19,70 +20,48 @@ public class GameRunner : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		panicLevel = 1;
+		panicLevel = 0;
 		delta = timeout;
 		spiders = new ArrayList ();
-
-		//;
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetKeyDown(KeyCode.Alpha1))
+		if (Input.GetKeyDown(KeyCode.Alpha1) && panicLevel != 1)
 		{
 			panicLevel = 1;
-			StopCoroutine ("SpawnSpider");
+			//StopCoroutine ("SpawnSpider");
 			StartCoroutine ("SpawnSpider", spiderBrown.transform);
 		}
-		else if (Input.GetKeyDown(KeyCode.Alpha2))
+		else if (Input.GetKeyDown(KeyCode.Alpha2) && panicLevel != 2)
 		{
 			panicLevel = 2;
-			StopCoroutine("HauntHuman");
-			StartCoroutine ("HauntHuman", spiderBlack.transform);
+			//StopCoroutine("HauntHuman");
+			StartCoroutine ("HauntHuman");
 		}
-		else if (Input.GetKeyDown(KeyCode.Alpha3))
-		{
+		else if (Input.GetKeyDown(KeyCode.Alpha3) && panicLevel != 3)
+		{						
 			panicLevel = 3; 
+			//StopCoroutine("ChargeAttackHuman");
+			StartCoroutine ("ChargeAttackHuman");
 		}
-
-		//panicLevel = 2;
-
-		switch (panicLevel) {
-				
-		case 1:
-
-			// spawn one spider in different locations, not too close to human
-			// when human gets too close, spider disappears
-
-			break;
-
-		case 2:
-
-			// two spiders
-			// one randomly crawling on ceiling, walls etc.
-			// one randomly appearing behind human and hissing
-
-			break;
-
-		case 3:
-
-			// code for level 3
-
-			break;
-
-		default:
-			break;
+		else if (Input.GetKeyDown(KeyCode.Alpha4) && panicLevel != 4)
+		{
+			panicLevel = 4;
+			//StopCoroutine("SummonDarkOne");
+			StartCoroutine("SummonDarkOne");
 		}
 	}
 
-	// PANIC LEVEL 1
-	IEnumerator SpawnSpider(Transform t)
+
+	// PANIC LEVEL 1 - One little spider spawns randomly and disappears after a certain amount of time or when human gets close
+	IEnumerator SpawnSpider()
 	{
 		// INITIALIZATION
 		GameObject lightObject = (GameObject)GameObject.Find ("Point light");
-		lightObject.GetComponent<Light> ().light.range = 20;	// brighten light
+		lightObject.GetComponent<Light> ().light.range = 25;	// change lighting
 
 		GameObject newSpider;
 		newSpider = (GameObject)Instantiate(spiderBrown);
@@ -102,7 +81,8 @@ public class GameRunner : MonoBehaviour {
 				{
 					location = spawnLocations [Random.Range (0, spawnLocations.Length)];
 					dist = Mathf.Abs(Vector3.Distance(human.transform.localPosition, location.transform.localPosition));
-				} while (dist <= 8f);
+				} 
+				while (dist <= 8f);
 
 				newSpider.transform.localPosition = location.transform.localPosition;
 				newSpider.transform.LookAt(spiderLookAtPoint);
@@ -121,15 +101,15 @@ public class GameRunner : MonoBehaviour {
 		yield return null;
 	}
 
-	IEnumerator HauntHuman(Transform t)
+	// PANIC LEVEL 2 - One little black spider appears, runs towards human, disappears and reappears elsewhere if it gets too close
+	IEnumerator HauntHuman()
 	{
-		// LEVEL 2
-
 		//INITIALIZATION
 		GameObject lightObject = (GameObject)GameObject.Find ("Point light");
-		lightObject.GetComponent<Light> ().light.range = 10;	// dim light
+		lightObject.GetComponent<Light> ().light.range = 18;	// dim light
 		GameObject newSpider = (GameObject)Instantiate (spiderBlack);
-		newSpider.transform.localScale = new Vector3 (1f, 1f, 1f);
+		float scale = 0.5f;
+		newSpider.transform.localScale = new Vector3 (scale, scale, scale);
 		newSpider.AddComponent ("SpiderHaunt");
 
 		// EXECUTION
@@ -145,4 +125,60 @@ public class GameRunner : MonoBehaviour {
 		yield return null;
 	}
 
+	// PANIC LEVEL 3 - multiple big black spiders charge towards human; when close, they start taunting 
+	IEnumerator ChargeAttackHuman()
+	{
+		//INITIALIZATION
+		GameObject lightObject = (GameObject)GameObject.Find ("Point light");
+		lightObject.GetComponent<Light> ().light.range = 10;	// dim light
+
+		GameObject[] newSpiders = new GameObject[5]; 
+		for (int i = 0; i < newSpiders.Length; i++)
+		{
+			newSpiders[i] = (GameObject)Instantiate (spiderBlack);
+			newSpiders[i].transform.localScale = new Vector3 (0.8f, 0.8f, 0.8f);
+			newSpiders[i].AddComponent ("SpiderChargeAttack");
+
+			// Note: set spiders to spawn in different locations maybe?
+		}
+
+		// EXECUTION
+		while (panicLevel == 3) {
+			
+			yield return null;
+			
+		}
+		
+		// CLEANUP
+		foreach (var spider in newSpiders) 
+		{
+			GameObject.Destroy (spider);
+		}
+
+		yield return null;
+	}
+
+	// PANIC LEVEL 4 - Warning: The creators of this application are not responsible for any emotional trauma you might experience from this point onward.
+	IEnumerator SummonDarkOne()
+	{
+		// INITIALIZATION
+		GameObject darkOneCopy = (GameObject)Instantiate (GameObject.Find ("DarkOne"));
+		darkOneCopy.AddComponent ("DarkOneBehaviour");
+		GameObject lightObject = (GameObject)GameObject.Find ("Point light");
+		lightObject.GetComponent<Light> ().light.range = 5;	// dim light
+
+		GameObject camera = (GameObject)GameObject.Find ("Main Camera");
+		camera.audio.Play ();
+
+		// EXECUTION
+		while (panicLevel == 4) {
+			
+			yield return null;
+			
+		}
+
+		// CLEANUP
+		GameObject.Destroy (darkOneCopy);
+		camera.audio.Stop ();
+	}
 }
