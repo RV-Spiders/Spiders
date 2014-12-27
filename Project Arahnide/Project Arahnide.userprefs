@@ -1,4 +1,5 @@
 ﻿<Properties>
+<<<<<<< HEAD
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\SpiderHaunt.cs">
     <Files>
@@ -6,6 +7,12 @@
       <File FileName="Assets\SpiderHaunt.cs" Line="40" Column="3" />
       <File FileName="Assets\SpiderChargeAttack.cs" Line="1" Column="1" />
       <File FileName="Assets\DarkOneBehaviour.cs" Line="1" Column="1" />
+=======
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\GameRunner.cs">
+    <Files>
+      <File FileName="Assets\GameRunner.cs" Line="52" Column="63" />
+>>>>>>> 03997a59c9c2f129476e8460b4f3eb619116917d
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
