@@ -32,19 +32,16 @@ public class GameRunner : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Alpha1) && panicLevel != 1)
 		{
 			panicLevel = 1;
-			//StopCoroutine ("SpawnSpider");
 			StartCoroutine ("SpawnSpider", spiderBrown.transform);
 		}
 		else if (Input.GetKeyDown(KeyCode.Alpha2) && panicLevel != 2)
 		{
 			panicLevel = 2;
-			//StopCoroutine("HauntHuman");
 			StartCoroutine ("HauntHuman");
 		}
 		else if (Input.GetKeyDown(KeyCode.Alpha3) && panicLevel != 3)
 		{						
 			panicLevel = 3; 
-			//StopCoroutine("ChargeAttackHuman");
 			StartCoroutine ("ChargeAttackHuman");
 		}
 		else if (Input.GetKeyDown(KeyCode.Alpha4) && panicLevel != 4)
