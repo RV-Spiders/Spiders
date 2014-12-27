@@ -13,6 +13,8 @@ public class GameRunner : MonoBehaviour {
 	public GameObject spiderBlack;
 	public ArrayList spiders;
 
+	public GameObject flashLight;
+
 	private GameObject[] spawnLocations;
 	Transform spiderLookAtPoint;
 
@@ -24,7 +26,8 @@ public class GameRunner : MonoBehaviour {
 		spiders = new ArrayList ();
 
 		//;
-
+		flashLight = (GameObject)GameObject.Find ("FlashLight");
+		flashLight.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -45,6 +48,9 @@ public class GameRunner : MonoBehaviour {
 		else if (Input.GetKeyDown(KeyCode.Alpha3))
 		{
 			panicLevel = 3; 
+
+			GameObject mainLight = (GameObject)GameObject.Find("Point light");
+			mainLight.SetActive(false);
 		}
 
 		//panicLevel = 2;
@@ -69,6 +75,10 @@ public class GameRunner : MonoBehaviour {
 		case 3:
 
 			// code for level 3
+			if (Input.GetKeyUp(KeyCode.F))
+			{
+				flashLight.SetActive(!flashLight.activeSelf);
+			}
 
 			break;
 
