@@ -10,15 +10,20 @@ public class SpiderHaunt : MonoBehaviour {
 
 	float timeout = 5f;
 	float delta = 0f;
+	private GameObject[] spawnLocations;
+	AudioSource[] audioSources;
 
 	void Start () {
 	
 		human = GameObject.Find ("First Person Controller");
-
-		gameObject.transform.localPosition = human.transform.localPosition - new Vector3(7, 0, 7);
+		spawnLocations = GameObject.FindGameObjectsWithTag ("Level2SpawnLocation"); 
+		gameObject.transform.localPosition = spawnLocations [Random.Range (0, spawnLocations.Length)].transform.localPosition;
+		audioSources = (AudioSource[])gameObject.GetComponents<AudioSource> ();
 
 		gameObject.AddComponent<NavMeshAgent>();
 		navMeshAgent = (NavMeshAgent)gameObject.GetComponent<NavMeshAgent> ();
+
+		audioSources[Random.Range(0, audioSources.Length)].Play(); // hiss to attract attention
 
 	}
 	
@@ -28,17 +33,7 @@ public class SpiderHaunt : MonoBehaviour {
 		if (delta <= 0) {
 
 			delta = timeout;
-
-			gameObject.audio.Play(); // hiss to attract attention
-
-			if (Random.Range(0, 10) <= 3)
-			{
-				gameObject.transform.localScale = new Vector3(0, 0, gameObject.transform.localScale.z);
-			}
-			else
-			{
-				gameObject.transform.localScale = new Vector3(2f, 2f, 2f);
-			}
+	
 		} 
 		else 
 		{
@@ -52,8 +47,8 @@ public class SpiderHaunt : MonoBehaviour {
 			}
 			else
 			{
-				navMeshAgent.Stop();
-				gameObject.animation.Play("taunt");
+				audioSources[Random.Range(0, audioSources.Length)].Play(); // hiss to attract attention
+				gameObject.transform.localPosition = spawnLocations[Random.Range(0, spawnLocations.Length)].transform.localPosition;
 			}
 		}
 

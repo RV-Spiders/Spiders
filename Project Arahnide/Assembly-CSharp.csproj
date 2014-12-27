@@ -46,7 +46,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\DarkOneBehaviour.cs" />
      <Compile Include="Assets\GameRunner.cs" />
+     <Compile Include="Assets\SpiderChargeAttack.cs" />
      <Compile Include="Assets\SpiderDisappearWhenHumanClose.cs" />
      <Compile Include="Assets\SpiderErraticMovement.cs" />
      <Compile Include="Assets\SpiderHaunt.cs" />
