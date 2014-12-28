@@ -38,7 +38,7 @@ public class LaserScript : MonoBehaviour {
 				line.SetPosition(1, hit.point);
 				if(hit.rigidbody)
 				{
-					hit.rigidbody.AddForceAtPosition(transform.forward * 10, hit.point);
+					hit.rigidbody.AddForceAtPosition(transform.forward * 100, hit.point);
 				}
 			}
 			else
