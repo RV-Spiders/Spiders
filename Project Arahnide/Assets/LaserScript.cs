@@ -35,10 +35,33 @@ public class LaserScript : MonoBehaviour {
 			if(Physics.Raycast(ray, out hit, 100))
 			{
 				var objectHit = hit.transform.gameObject;
+
+				var objectHitName = objectHit.name;
+				objectHitName = objectHitName.Replace("(Clone)", string.Empty);
+
+				float hitCoeff = 1.0f;
+
+				if ("SpiderBlack".Equals(objectHitName))
+				{
+					hitCoeff = 1.2f;
+				}
+				else if ("SpiderBrown".Equals(objectHitName))
+				{
+					hitCoeff = 1.2f;
+				}
+				else if ("DarkMinion".Equals(objectHitName))
+				{
+					hitCoeff = 1.3f;
+				}
+				else if ("DarkOne".Equals(objectHitName))
+				{
+					hitCoeff = 9.0f;
+				}
+
 				line.SetPosition(1, hit.point);
 				if(hit.rigidbody)
 				{
-					hit.rigidbody.AddForceAtPosition(transform.forward * 100, hit.point);
+					hit.rigidbody.AddForceAtPosition(transform.forward * hitCoeff, hit.point);
 				}
 			}
 			else

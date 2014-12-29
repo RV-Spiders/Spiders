@@ -20,6 +20,8 @@ public class GameRunner : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		human = (GameObject)GameObject.Find ("First Person Controller");
+
 		panicLevel = 0;
 		delta = timeout;
 		spiders = new ArrayList ();
