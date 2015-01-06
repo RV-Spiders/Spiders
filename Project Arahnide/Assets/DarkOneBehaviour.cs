@@ -51,12 +51,16 @@ public class DarkOneBehaviour : MonoBehaviour {
 		{
 			delta -= Time.deltaTime;
 			
-			if (Vector3.Distance(human.transform.localPosition, gameObject.transform.localPosition) > 5f)
+			if (Vector3.Distance(human.transform.localPosition, gameObject.transform.localPosition) > 6f)
 			{
 				if (!gameObject.animation.IsPlaying("taunt"))
 					gameObject.animation.Play("run");
 
-				navMeshAgent.Resume();
+				if (!navMeshAgent.pathPending)
+				{
+					navMeshAgent.SetDestination (new Vector3 (human.transform.localPosition.x, 1.0f, human.transform.localPosition.z));
+				}
+
 			}
 			else
 			{			
@@ -67,7 +71,7 @@ public class DarkOneBehaviour : MonoBehaviour {
 					audioSources[0].Play ();
 				}
 
-				navMeshAgent.Stop();
+				navMeshAgent.ResetPath();
 			}
 		}
 
@@ -98,15 +102,18 @@ public class DarkOneBehaviour : MonoBehaviour {
 		
 		gameObject.transform.LookAt (new Vector3 (human.transform.localPosition.x, 1.0f, human.transform.localPosition.z));
 		
-		if (pathRecalcDelta >= pathRecalcTime)	// recalculate pathing
+	/*	if (pathRecalcDelta >= pathRecalcTime)	// recalculate pathing
 		{
 			if (!navMeshAgent.pathPending)
+			{
+				navMeshAgent.ResetPath();
 				navMeshAgent.SetDestination (new Vector3 (human.transform.localPosition.x, 1.0f, human.transform.localPosition.z));
+			}
 			pathRecalcDelta = 0.0f;
 		}
 		else
 		{
 			pathRecalcDelta += Time.deltaTime;
-		}
+		}*/
 	}
 }

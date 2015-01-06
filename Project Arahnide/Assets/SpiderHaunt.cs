@@ -13,8 +13,12 @@ public class SpiderHaunt : MonoBehaviour {
 	private GameObject[] spawnLocations;
 	AudioSource[] audioSources;
 
+	const float hasReachedHumanTime = 10f;
+	float hasReachedHumanDelta;
+
 	void Start () {
-	
+		hasReachedHumanDelta = 0.0f;
+
 		human = GameObject.Find ("First Person Controller");
 		spawnLocations = GameObject.FindGameObjectsWithTag ("Level2SpawnLocation"); 
 		gameObject.transform.localPosition = spawnLocations [Random.Range (0, spawnLocations.Length)].transform.localPosition;
@@ -43,15 +47,29 @@ public class SpiderHaunt : MonoBehaviour {
 			{
 				gameObject.animation.Play("run");
 				if (!navMeshAgent.pathPending)
+				{
 					navMeshAgent.SetDestination (new Vector3(human.transform.localPosition.x, /*gameObject.transform.localPosition.y*/ 1, human.transform.localPosition.z));
+				}
 			}
 			else
 			{
 				audioSources[Random.Range(0, audioSources.Length)].Play(); // hiss to attract attention
 				gameObject.transform.localPosition = spawnLocations[Random.Range(0, spawnLocations.Length)].transform.localPosition;
+
+				navMeshAgent.ResetPath();
 			}
 		}
 
+		if (hasReachedHumanDelta >= hasReachedHumanTime) // if spider hasn't reached human, it was maybe because of shoddy pathing => reset spider
+		{
+			hasReachedHumanDelta = 0.0f;
+			
+			gameObject.transform.localPosition = spawnLocations[Random.Range(0, spawnLocations.Length)].transform.localPosition;
+		} 
+		else 
+		{
+			hasReachedHumanDelta += Time.deltaTime;
+		}
 
 		gameObject.transform.LookAt (new Vector3 (human.transform.localPosition.x, 1, human.transform.localPosition.z));
 	}

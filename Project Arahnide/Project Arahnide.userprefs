@@ -1,9 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\LaserScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\GameRunner.cs">
     <Files>
-      <File FileName="Assets\LaserScript.cs" Line="58" Column="23" />
+      <File FileName="Assets\DarkOneBehaviour.cs" Line="117" Column="6" />
+      <File FileName="Assets\LaserScript.cs" Line="1" Column="1" />
       <File FileName="Assets\GameRunner.cs" Line="1" Column="1" />
+      <File FileName="Assets\SpiderHaunt.cs" Line="49" Column="2" />
+      <File FileName="Assets\SpiderChargeAttack.cs" Line="106" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

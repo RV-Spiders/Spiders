@@ -65,12 +65,17 @@ public class SpiderChargeAttack : MonoBehaviour {
 			
 			if (Vector3.Distance(human.transform.localPosition, gameObject.transform.localPosition) > 5f)
 			{
-				navMeshAgent.Resume();
+				if (!navMeshAgent.pathPending)
+				{
+					navMeshAgent.SetDestination (new Vector3(human.transform.localPosition.x, /*gameObject.transform.localPosition.y*/ 1, human.transform.localPosition.z));
+				}
+				//navMeshAgent.Resume();
 				gameObject.animation.Play("run");
 			}
 			else
-			{			
-				navMeshAgent.Stop();
+			{		
+				navMeshAgent.ResetPath();
+				//navMeshAgent.Stop();
 				hasReachedHumanDelta = 0.0f; // spider reached human, no need to reset, since it already has been
 				gameObject.animation.Play("taunt");
 			}
@@ -89,7 +94,7 @@ public class SpiderChargeAttack : MonoBehaviour {
 		
 		gameObject.transform.LookAt (new Vector3 (human.transform.localPosition.x, 1.0f, human.transform.localPosition.z));
 		
-		if (pathRecalcDelta >= pathRecalcTime) 
+		/*if (pathRecalcDelta >= pathRecalcTime) 
 		{
 			if (!navMeshAgent.pathPending)
 				navMeshAgent.SetDestination (new Vector3 (human.transform.localPosition.x, 1.0f, human.transform.localPosition.z));
@@ -98,6 +103,6 @@ public class SpiderChargeAttack : MonoBehaviour {
 		else
 		{
 			pathRecalcDelta += Time.deltaTime;
-		}
+		}*/
 	}
 }
