@@ -17,10 +17,14 @@ public class GameRunner : MonoBehaviour {
 	private GameObject[] spawnLocations;
 	Transform spiderLookAtPoint;
 
+	public GameObject laserWeapon;
+
 	// Use this for initialization
 	void Start () {
 
 		human = (GameObject)GameObject.Find ("First Person Controller");
+
+		laserWeapon = (GameObject)GameObject.Find ("LaserWeapon");
 
 		panicLevel = 0;
 		delta = timeout;
@@ -34,23 +38,47 @@ public class GameRunner : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Alpha1) && panicLevel != 1)
 		{
 			panicLevel = 1;
+
+			//deactivate laser weapon
+			SetActiveLaserWeapon(false);
+
 			StartCoroutine ("SpawnSpider", spiderBrown.transform);
 		}
 		else if (Input.GetKeyDown(KeyCode.Alpha2) && panicLevel != 2)
 		{
 			panicLevel = 2;
+
+			//activate laser weapon
+			SetActiveLaserWeapon(true);;
+
 			StartCoroutine ("HauntHuman");
 		}
 		else if (Input.GetKeyDown(KeyCode.Alpha3) && panicLevel != 3)
 		{						
 			panicLevel = 3; 
+
+			//activate laser weapon
+			SetActiveLaserWeapon(true);
+
 			StartCoroutine ("ChargeAttackHuman");
 		}
 		else if (Input.GetKeyDown(KeyCode.Alpha4) && panicLevel != 4)
 		{
 			panicLevel = 4;
+
+			//activate laser weapon
+			SetActiveLaserWeapon(true);
+
 			//StopCoroutine("SummonDarkOne");
 			StartCoroutine("SummonDarkOne");
+		}
+	}
+
+	private void SetActiveLaserWeapon(bool active)
+	{
+		if (laserWeapon.activeSelf != active) 
+		{
+			laserWeapon.SetActive(active);
 		}
 	}
 

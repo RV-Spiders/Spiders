@@ -55,8 +55,10 @@ public class LaserScript : MonoBehaviour {
 				}
 				else if ("DarkOne".Equals(objectHitName))
 				{
-					hitCoeff = 9.0f;
+					hitCoeff = 10.0f;
 				}
+
+				Debug.Log(string.Format("Object hit: {0} with coeff {1}", objectHitName, hitCoeff));
 
 				line.SetPosition(1, hit.point);
 				if(hit.rigidbody)
