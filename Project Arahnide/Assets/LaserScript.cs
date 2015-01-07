@@ -43,22 +43,22 @@ public class LaserScript : MonoBehaviour {
 
 				if ("SpiderBlack".Equals(objectHitName))
 				{
-					hitCoeff = 1.2f;
+					hitCoeff = 1.05f;
 				}
 				else if ("SpiderBrown".Equals(objectHitName))
 				{
-					hitCoeff = 1.2f;
+					hitCoeff = 1.1f;
 				}
 				else if ("DarkMinion".Equals(objectHitName))
 				{
-					hitCoeff = 1.3f;
+					hitCoeff = 1.2f;
 				}
 				else if ("DarkOne".Equals(objectHitName))
 				{
-					hitCoeff = 10.0f;
+					hitCoeff = 18.0f;
 				}
 
-				Debug.Log(string.Format("Object hit: {0} with coeff {1}", objectHitName, hitCoeff));
+				//Debug.Log(string.Format("Object hit: {0} with coeff {1}", objectHitName, hitCoeff));
 
 				line.SetPosition(1, hit.point);
 				if(hit.rigidbody)
